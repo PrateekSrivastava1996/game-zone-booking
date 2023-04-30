@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import GameList from "./GameList";
 import Header from "./Header/Header";
 
 const DashBoard = () => {
-  const [count, setCount] = useState(0);
+  // const { cartItems, setCartItems } = useContext(CheckoutData);
+  const [cartItems, setCartItems] = useState([]);
+  const [count, setCount] = useState(JSON.parse(localStorage.getItem("count")));
   const [games, setGames] = useState([
     {
       id: 1,
@@ -38,12 +40,31 @@ const DashBoard = () => {
         "data:image/jpeg;base64,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",
     },
   ]);
-  const [cartItems, setCartItems] = useState([]);
+
   const addToCart = (items) => {
     setCount((prev) => prev + 1);
-    setCartItems(items);
+    const existingItem = cartItems.find((item) => item.id == items.id);
+    if (existingItem) {
+      const updatedItems = cartItems.map((item) => {
+        if (item?.id === items?.id) {
+          return { ...existingItem, quantity: item.quantity + 1 };
+        } else {
+          return item;
+        }
+      });
+      setCartItems(updatedItems);
+      let data = JSON.stringify(updatedItems);
+      localStorage.setItem("cartItems", data);
+    } else {
+      let data = [...cartItems, { ...items, quantity: 1 }];
+      setCartItems(data);
+      let data2 = JSON.stringify(data);
+      localStorage.setItem("cartItems", data2);
+    }
   };
-  console.log(cartItems, "::::");
+  useEffect(() => {
+    localStorage.setItem("count", count);
+  }, [count]);
   return (
     <div className="container-fluid movie-app">
       <div className="row">

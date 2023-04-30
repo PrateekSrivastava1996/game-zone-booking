@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { FaUser, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-// import toast from "toastr";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,7 +13,7 @@ const Login = () => {
 
   const validation = () => {
     let err = true;
-    const regex = new RegExp(
+    const emailregex = new RegExp(
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 
@@ -25,7 +24,7 @@ const Login = () => {
     if (!email || email.trim() == "") {
       setError({ email: "Required valid email address" });
       return (err = false);
-    } else if (!regex.test(email)) {
+    } else if (!emailregex.test(email)) {
       setError({ email: "Not a valid email address" });
       return (err = false);
     }
@@ -93,6 +92,7 @@ const Login = () => {
           Login <FaUser />
         </Button>
       </Form>
+      Don't have an account ? <Link to="/">Sign-up</Link>
     </>
   );
 };
